@@ -5,9 +5,9 @@ const port = process.env.PORT || 5000;
 require('./database');
 
 ///server
-const server = new ApolloServer({ schema }, { playground: true });
+const server = new ApolloServer({ schema }, { playground: true, introspection: true });
 
 ///middleware
 server.listen(port, () => {
-	console.log('🚀  Server ready at port ' + port);
+	console.log(`>>>Server ready at port ${port}<<<`);
 });
