@@ -1,20 +1,13 @@
-const express = require('express');
-const graphqlHTTP = require('express-graphql');
+const { ApolloServer } = require('apollo-server');
 const schema = require('./schema/schema');
-const app = express();
+require('dotenv/config');
 const port = process.env.PORT || 5000;
 require('./database');
 
-///middleware
-app.use(
-	'/graphql',
-	graphqlHTTP({
-		schema,
-		graphiql: true
-	})
-);
-
 ///server
-app.listen(port, () => {
-	console.log(`Server running on port ${port} 🔥`);
+const server = new ApolloServer({ schema }, { playground: true });
+
+///middleware
+server.listen(port, () => {
+	console.log('🚀  Server ready at port ' + port);
 });
