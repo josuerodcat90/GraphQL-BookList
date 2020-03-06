@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const db = mongoose.connection;
 const uri =
-	'mongodb+srv://dbtester:SPJaLH4CWXWYJEK5@devmongodbs-aoexc.mongodb.net/graphQL-ninja?retryWrites=true&w=majority';
+	'mongodb+srv://dbtester:SEcHkEcX5Fmdx6R4@devmongodbs-aoexc.mongodb.net/graphQL-ninja?retryWrites=true&w=majority';
 
 mongoose.connect(uri, {
 	useNewUrlParser: true,
