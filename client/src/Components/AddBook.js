@@ -1,8 +1,11 @@
 import React, { useState, useMemo } from 'react';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery, useMutation } from '@apollo/react-hooks';
 
 ///Queries
 import { getAuthorsQuery } from '../GraphQL/Queries';
+
+///Mutations
+import { addBookMutation } from '../GraphQL/Mutations';
 
 ///Set Scenarios
 const getOptions = (loading, error, data) => {
@@ -26,12 +29,19 @@ const AddBook = () => {
 	const [name, setName] = useState('');
 	const [genre, setGenre] = useState('');
 	const [authorId, setAuthorId] = useState('');
+	const { addBook } = useMutation(addBookMutation, {
+		variables: {
+			name,
+			genre,
+			authorId
+		}
+	});
 
 	const options = useMemo(() => getOptions(loading, error, data), [loading, error, data]);
 
 	const handleSubmit = e => {
 		e.preventDefault();
-		console.log(`The book name is ${name}, and the genre is ${genre} from the author ${authorId}`);
+		addBook();
 	};
 
 	return (
@@ -43,6 +53,7 @@ const AddBook = () => {
 					onChange={e => {
 						setName(e.target.value);
 					}}
+					value='A Christmas Carol'
 				/>
 			</div>
 
@@ -53,6 +64,7 @@ const AddBook = () => {
 					onChange={e => {
 						setGenre(e.target.value);
 					}}
+					value='Fantasy'
 				/>
 			</div>
 
@@ -62,6 +74,7 @@ const AddBook = () => {
 					onChange={e => {
 						setAuthorId(e.target.value);
 					}}
+					value='5e305caa81e67c315c40328f'
 				>
 					<option>Select Author</option>
 					{options}
