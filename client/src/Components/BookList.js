@@ -2,11 +2,11 @@ import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 
 ///GraphQL Queries & Mutations
-import { getBooksQuery } from '../GraphQL/Queries';
+import { GET_BOOKS_QUERY } from '../GraphQL/Queries';
 
 const BookList = props => {
 	///Make the query to DB
-	const { loading, error, data } = useQuery(getBooksQuery);
+	const { loading, error, data } = useQuery(GET_BOOKS_QUERY);
 
 	///Get loading or error states
 	if (loading)

@@ -1,86 +1,58 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
-
-///Queries
-import { getAuthorsQuery } from '../GraphQL/Queries';
-
-///Mutations
-import { addBookMutation } from '../GraphQL/Mutations';
-
-///Set Scenarios
-const getOptions = (loading, error, data) => {
-	if (loading) {
-		return <option disabled>Loading Authors...</option>;
-	} else if (error) {
-		return <option disabled>Error loading Authors...</option>;
-	} else {
-		return data.authors.map(({ name, id }) => {
-			return (
-				<option key={id} value={id}>
-					{name}
-				</option>
-			);
-		});
-	}
-};
+import { GET_AUTHORS_QUERY, GET_BOOKS_QUERY } from '../GraphQL/Queries';
+import { ADD_BOOK_MUTATION } from '../GraphQL/Mutations';
 
 const AddBook = () => {
-	const { loading, error, data } = useQuery(getAuthorsQuery);
+	const { loading, data } = useQuery(GET_AUTHORS_QUERY);
+	const [AddBook] = useMutation(ADD_BOOK_MUTATION);
 	const [name, setName] = useState('');
 	const [genre, setGenre] = useState('');
 	const [authorId, setAuthorId] = useState('');
-	const { addBook } = useMutation(addBookMutation, {
-		variables: {
-			name,
-			genre,
-			authorId
+
+	const displayAuthors = () => {
+		if (loading) {
+			return <option disabled>Loading authors</option>;
+		} else {
+			return data.authors.map(author => {
+				return (
+					<option key={author.id} value={author.id}>
+						{author.name}
+					</option>
+				);
+			});
 		}
-	});
+	};
 
-	const options = useMemo(() => getOptions(loading, error, data), [loading, error, data]);
-
-	const handleSubmit = e => {
+	const submitForm = e => {
 		e.preventDefault();
-		addBook();
+		AddBook({
+			variables: {
+				name: name,
+				genre: genre,
+				authorId: authorId
+			},
+			refetchQueries: [{ query: GET_BOOKS_QUERY }]
+		});
 	};
 
 	return (
-		<form id='add-book' onSubmit={handleSubmit}>
+		<form id='add-book' onSubmit={submitForm}>
 			<div className='field'>
-				<label>Book name: </label>
-				<input
-					type='text'
-					onChange={e => {
-						setName(e.target.value);
-					}}
-					value='A Christmas Carol'
-				/>
+				<label>Book name:</label>
+				<input type='text' onChange={e => setName(e.target.value)} />
 			</div>
-
 			<div className='field'>
-				<label>Genre: </label>
-				<input
-					type='text'
-					onChange={e => {
-						setGenre(e.target.value);
-					}}
-					value='Fantasy'
-				/>
+				<label>Genre:</label>
+				<input type='text' onChange={e => setGenre(e.target.value)} />
 			</div>
-
 			<div className='field'>
-				<label>Author: </label>
-				<select
-					onChange={e => {
-						setAuthorId(e.target.value);
-					}}
-					value='5e305caa81e67c315c40328f'
-				>
-					<option>Select Author</option>
-					{options}
+				<label>Author:</label>
+				<select onChange={e => setAuthorId(e.target.value)}>
+					<option>Select author</option>
+					{displayAuthors()}
 				</select>
 			</div>
-
 			<button>+</button>
 		</form>
 	);
