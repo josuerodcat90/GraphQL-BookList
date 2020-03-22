@@ -11,17 +11,17 @@ const AddBook = () => {
 	const [authorId, setAuthorId] = useState('');
 
 	const displayAuthors = () => {
-		if (loading) {
-			return <option disabled>Loading authors</option>;
-		} else {
-			return data.authors.map(author => {
+		return loading ? (
+			<option disabled>Loading authors</option>
+		) : (
+			data.authors.map(author => {
 				return (
 					<option key={author.id} value={author.id}>
 						{author.name}
 					</option>
 				);
-			});
-		}
+			})
+		);
 	};
 
 	const submitForm = e => {
