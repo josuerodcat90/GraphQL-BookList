@@ -9,5 +9,5 @@ const server = new ApolloServer({ schema });
 
 ///middleware
 server.listen(PORT, () => {
-	console.log(`>>>Server ready at port ${port}<<<`);
+	console.log(`>>>Server ready at port ${PORT}<<<`);
 });
