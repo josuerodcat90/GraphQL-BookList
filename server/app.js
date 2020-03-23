@@ -5,7 +5,7 @@ const PORT = process.env.PORT || 5000;
 require('./database');
 
 ///server
-const server = new ApolloServer({ schema });
+const server = new ApolloServer({ schema }, { playground: true, introspection: true });
 
 ///middleware
 server.listen(PORT, () => {
