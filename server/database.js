@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const db = mongoose.connection;
-const uri =
-	'mongodb+srv://dbtester:SEcHkEcX5Fmdx6R4@devmongodbs-aoexc.mongodb.net/graphQL-ninja?retryWrites=true&w=majority';
+const uri = process.env.DB_URI || 'http://localhost:27017/test';
 
 mongoose.connect(uri, {
 	useNewUrlParser: true,
